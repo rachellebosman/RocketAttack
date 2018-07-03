@@ -1,0 +1,39 @@
+body, html {
+    margin:0; padding:0;
+   
+}
+
+* {
+    box-sizing: border-box;
+    background-image: url(../img/background.png);
+    
+    z-index: 1;
+
+}
+
+
+spaceship {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background-image: url(../img/spaceship.png);
+    background-repeat: no-repeat; 
+    z-index: 2;  
+}
+
+
+rock {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background-image: url(../img/rock.png);
+    background-repeat: no-repeat;   
+}
+
+smallRock {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background-image: url(../img/smallRock.png);
+    background-repeat: no-repeat;   
+}
