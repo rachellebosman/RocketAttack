@@ -6,6 +6,7 @@ class Spaceship {
     private y:number = window.innerHeight - 100
     private speedLeft: number = 0
     private speedRight: number = 0
+    public lives:number = 5
 
 
     constructor() {

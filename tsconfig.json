@@ -5,7 +5,6 @@
         "removeComments": true,
         "noUnusedLocals":true,
         "noUnusedParameters":true,
-        "strictPropertyInitialization": false,
         "sourceMap": true,
         "outFile": "docs/js/main.js"
     },

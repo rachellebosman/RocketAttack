@@ -11,51 +11,148 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Game = (function () {
     function Game() {
-        this.rocks = [];
-        this.maxRocks = 10;
-        this.smallRocks = [];
-        this.spaceship = new Spaceship();
-        this.rock = new Rock();
-        this.smallRock = new SmallRock();
-        for (var i = 0; i < this.maxRocks; i++) {
-            this.rocks.push(new Rock());
-            console.log('nieuwe steen');
-        }
-        for (var i = 0; i < this.maxRocks; i++) {
-            this.smallRocks.push(new SmallRock());
-            console.log('nieuwe kleine steen');
-        }
-        var hit = this.checkCollision(this.spaceship.getRectangle(), this.rock.getRectangle());
-        console.log("car 1 hits car 2 ? " + hit);
+        this.currentscreen = new StartScreen(this);
         this.gameLoop();
     }
-    Game.prototype.checkCollision = function (a, b) {
+    Game.prototype.gameLoop = function () {
+        var _this = this;
+        this.currentscreen.update();
+        requestAnimationFrame(function () { return _this.gameLoop(); });
+    };
+    Game.prototype.emptyScreen = function () {
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.innerHTML = "";
+    };
+    Game.prototype.showScreen = function (screen) {
+        this.currentscreen = screen;
+    };
+    return Game;
+}());
+window.addEventListener("load", function () { return new Game(); });
+var GameOver = (function () {
+    function GameOver() {
+        this.textfield = document.createElement("textfieldGameOver");
+        document.body.appendChild(this.textfield);
+    }
+    GameOver.prototype.update = function () {
+        this.textfield.innerHTML = "GAME OVER <br><br> Door te veel botsingen is het schip beschadigd en niet in staat om verder te vliegen. <br><br> Nog een keer proberen ? <br><br>Druk op F5. ";
+    };
+    return GameOver;
+}());
+var GameScreen = (function () {
+    function GameScreen(g) {
+        this.lives = 0;
+        this.score = 0;
+        this.game = g;
+        this.spaceship = new Spaceship();
+        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock()];
+        this.smallRocks = [new SmallRock(), new SmallRock()];
+        this.textfield = document.createElement("textfield");
+        document.body.appendChild(this.textfield);
+        this.liveElement = document.createElement("lives");
+        document.body.appendChild(this.liveElement);
+        this.scoreElement = document.createElement("score");
+        document.body.appendChild(this.scoreElement);
+        this.updateLives(3);
+        this.updateScore(0);
+    }
+    GameScreen.prototype.update = function () {
+        this.spaceship.update();
+        for (var _i = 0, _a = this.rocks; _i < _a.length; _i++) {
+            var r = _a[_i];
+            r.update();
+            if (this.checkCollision(this.spaceship.getRectangle(), r.getRectangle())) {
+                r.reset();
+                console.log("paniek, steen geraakt!");
+                this.updateLives(-1);
+            }
+            if (r.getRectangle().bottom - r.getRectangle().height > window.innerHeight) {
+                r.reset();
+            }
+            for (var _b = 0, _c = this.smallRocks; _b < _c.length; _b++) {
+                var sr = _c[_b];
+                sr.update();
+                if (this.checkCollision(this.spaceship.getRectangle(), sr.getRectangle())) {
+                    sr.reset();
+                    console.log("power!!");
+                    this.updateScore(1);
+                }
+                if (sr.getRectangle().left + sr.getRectangle().width < 0) {
+                    sr.reset();
+                }
+            }
+        }
+    };
+    GameScreen.prototype.checkCollision = function (a, b) {
         return (a.left <= b.right &&
             b.left <= a.right &&
             a.top <= b.bottom &&
             b.top <= a.bottom);
     };
-    Game.prototype.gameLoop = function () {
-        var _this = this;
-        this.spaceship.update();
-        this.rock.update();
-        this.smallRock.update();
-        for (var i = 0; i < this.maxRocks; i++) {
-            this.rocks[i].update();
+    GameScreen.prototype.updateLives = function (points) {
+        this.lives = this.lives + points;
+        this.liveElement.innerHTML = "Levens: " + this.lives;
+        if (this.lives <= 0) {
+            this.game.emptyScreen();
+            this.game.showScreen(new GameOver());
         }
-        for (var i = 0; i < this.maxRocks; i++) {
-            this.smallRocks[i].update();
-        }
-        requestAnimationFrame(function () { return _this.gameLoop(); });
     };
-    return Game;
+    GameScreen.prototype.updateScore = function (pointss) {
+        this.score = this.score + pointss;
+        this.scoreElement.innerHTML = "Power: " + this.score;
+        if (this.score == 3) {
+            console.log('3 power items gefixt');
+            this.game.emptyScreen();
+            this.game.showScreen(new GameWin());
+        }
+    };
+    return GameScreen;
 }());
-window.addEventListener("load", function () { return new Game(); });
+var GameWin = (function () {
+    function GameWin() {
+        var _this = this;
+        this.textfield = document.createElement("textfieldWin");
+        document.body.appendChild(this.textfield);
+        this.textfield.addEventListener("click", function () { return _this.functienaam(); });
+        this.schip = document.createElement("schip");
+        document.body.appendChild(this.schip);
+    }
+    GameWin.prototype.update = function () {
+        this.textfield.innerHTML = "Yes, dankzij jou is het gelukt te ontsnappen! ";
+    };
+    GameWin.prototype.functienaam = function () {
+        location.href = "index3.html";
+    };
+    return GameWin;
+}());
+var Power = (function () {
+    function Power() {
+        this.htmlElement = document.createElement('power');
+        document.body.appendChild(this.htmlElement);
+        this.x = Math.random() * window.innerWidth;
+        this.y = Math.floor(Math.random() * -600) + -50;
+    }
+    Power.prototype.getRectangle = function () {
+        return this.htmlElement.getBoundingClientRect();
+    };
+    Power.prototype.update = function () {
+        this.y = this.y + 2;
+        this.htmlElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        if (this.y + this.htmlElement.clientHeight > 650) {
+            this.reset();
+        }
+    };
+    Power.prototype.reset = function () {
+        this.x = Math.random() * (window.innerWidth - 200);
+        this.y = -400 - (Math.random() * 450);
+    };
+    return Power;
+}());
 var rocksObject = (function () {
     function rocksObject(naamObject) {
         this.htmlElement = document.createElement(naamObject);
         document.body.appendChild(this.htmlElement);
-        this.x = Math.random() * window.innerWidth;
+        this.x = Math.random() * (window.innerWidth - 50);
         this.y = Math.floor(Math.random() * -600) + -50;
     }
     rocksObject.prototype.getRectangle = function () {
@@ -64,7 +161,7 @@ var rocksObject = (function () {
     rocksObject.prototype.update = function () {
         this.y = this.y + 2;
         this.htmlElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-        if (this.y + this.htmlElement.clientHeight > 900) {
+        if (this.y + this.htmlElement.clientHeight > 650) {
             this.reset();
         }
     };
@@ -95,6 +192,7 @@ var Spaceship = (function () {
         this.y = window.innerHeight - 100;
         this.speedLeft = 0;
         this.speedRight = 0;
+        this.lives = 5;
         this.htmlElement = document.createElement("spaceship");
         document.body.appendChild(this.htmlElement);
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
@@ -134,5 +232,24 @@ var Spaceship = (function () {
         }
     };
     return Spaceship;
+}());
+var StartScreen = (function () {
+    function StartScreen(g) {
+        var _this = this;
+        this.game = g;
+        this.textfield = document.createElement("textfield");
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.appendChild(this.textfield);
+        this.textfield.addEventListener("click", function () { return _this.switchScreens(); });
+        console.log('startsceen');
+    }
+    StartScreen.prototype.update = function () {
+        this.textfield.innerHTML = "<br><br>Help, we zijn vast komen te zitten in een asteroide storm! We hebben te weinig brandstof om met turbo speed te kunnen ontsnappen. Help jij ons om genoeg power-elementen (20) te verzamelen voor deze turbo speed ?<br><br> Gebruik de pijltjes toetsen om naar links en rechts te bewegen en ontwijk de stenen. <br><br> Click op de tekst om de reddingsactie te starten!  ";
+    };
+    StartScreen.prototype.switchScreens = function () {
+        this.game.emptyScreen();
+        this.game.showScreen(new GameScreen(this.game));
+    };
+    return StartScreen;
 }());
 //# sourceMappingURL=main.js.map

@@ -1,4 +1,4 @@
-class rocksObject {
+class Power {
 
     private htmlElement : HTMLElement
 
@@ -11,13 +11,13 @@ class rocksObject {
    
 
 
-    public constructor( naamObject : string) {
+    public constructor() {
 
-        this.htmlElement = document.createElement(naamObject);
+        this.htmlElement = document.createElement('power');
         document.body.appendChild(this.htmlElement);
 
         
-        this.x = Math.random() * (window.innerWidth - 50)
+        this.x = Math.random() * window.innerWidth
         //this.y = Math.random() * window.innerHeight
         //this.y = -400 - (Math.random() * 450)
         //this.y = -50
