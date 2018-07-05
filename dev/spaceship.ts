@@ -7,9 +7,12 @@ class Spaceship {
     private speedLeft: number = 0
     private speedRight: number = 0
     public lives:number = 5
+    protected speed:number
 
 
     constructor() {
+
+        this.speed = 10
 
         this.htmlElement = document.createElement("spaceship");
         document.body.appendChild(this.htmlElement);
@@ -55,10 +58,14 @@ class Spaceship {
         this.x = this.x + this.speedRight - this.speedLeft
         this.htmlElement.style.transform = `translate(${this.x}px, ${this.y}px)`
 
-        if (this.x + this.htmlElement.clientWidth > window.innerWidth || this.x < 0){
-            this.speedLeft = 0
+       
+        if (this.x + this.htmlElement.clientWidth > window.innerWidth){
+            this.x = this.speedLeft = 0
+            this.speedRight = this.speed
         }
-        if (this.y + this.htmlElement.clientHeight > window.innerHeight || this.y < 0){
+        if (this.x + this.htmlElement.clientWidth < 0){
+            this.x = window.innerWidth - this.htmlElement.clientWidth 
+            this.speedLeft = this.speed
             this.speedRight = 0
         }
 

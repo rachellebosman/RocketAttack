@@ -31,11 +31,16 @@ var Game = (function () {
 window.addEventListener("load", function () { return new Game(); });
 var GameOver = (function () {
     function GameOver() {
+        var _this = this;
         this.textfield = document.createElement("textfieldGameOver");
         document.body.appendChild(this.textfield);
+        this.textfield.addEventListener("click", function () { return _this.functienaam(); });
     }
     GameOver.prototype.update = function () {
-        this.textfield.innerHTML = "GAME OVER <br><br> Door te veel botsingen is het schip beschadigd en niet in staat om verder te vliegen. <br><br> Nog een keer proberen ? <br><br>Druk op F5. ";
+        this.textfield.innerHTML = "GAME OVER <br><br> Door te veel botsingen is het schip beschadigd en niet in staat om verder te vliegen. <br><br> Nog een keer proberen ? <br>Click op de tekst. ";
+    };
+    GameOver.prototype.functienaam = function () {
+        location.href = "index2.html";
     };
     return GameOver;
 }());
@@ -45,7 +50,7 @@ var GameScreen = (function () {
         this.score = 0;
         this.game = g;
         this.spaceship = new Spaceship();
-        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock()];
+        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(),];
         this.smallRocks = [new SmallRock(), new SmallRock()];
         this.textfield = document.createElement("textfield");
         document.body.appendChild(this.textfield);
@@ -100,8 +105,8 @@ var GameScreen = (function () {
     GameScreen.prototype.updateScore = function (pointss) {
         this.score = this.score + pointss;
         this.scoreElement.innerHTML = "Power: " + this.score;
-        if (this.score == 3) {
-            console.log('3 power items gefixt');
+        if (this.score == 20) {
+            console.log('alle power items gefixt');
             this.game.emptyScreen();
             this.game.showScreen(new GameWin());
         }
@@ -111,14 +116,14 @@ var GameScreen = (function () {
 var GameWin = (function () {
     function GameWin() {
         var _this = this;
-        this.textfield = document.createElement("textfieldWin");
+        this.textfield = document.createElement("textfieldGameOver");
         document.body.appendChild(this.textfield);
         this.textfield.addEventListener("click", function () { return _this.functienaam(); });
         this.schip = document.createElement("schip");
         document.body.appendChild(this.schip);
     }
     GameWin.prototype.update = function () {
-        this.textfield.innerHTML = "Yes, dankzij jou is het gelukt te ontsnappen! ";
+        this.textfield.innerHTML = "Je hebt genoeg power verzameld voor de turbo speed! <br><br> Click hier om verder te gaan.";
     };
     GameWin.prototype.functienaam = function () {
         location.href = "index3.html";
@@ -193,6 +198,7 @@ var Spaceship = (function () {
         this.speedLeft = 0;
         this.speedRight = 0;
         this.lives = 5;
+        this.speed = 10;
         this.htmlElement = document.createElement("spaceship");
         document.body.appendChild(this.htmlElement);
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
@@ -224,10 +230,13 @@ var Spaceship = (function () {
     Spaceship.prototype.update = function () {
         this.x = this.x + this.speedRight - this.speedLeft;
         this.htmlElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-        if (this.x + this.htmlElement.clientWidth > window.innerWidth || this.x < 0) {
-            this.speedLeft = 0;
+        if (this.x + this.htmlElement.clientWidth > window.innerWidth) {
+            this.x = this.speedLeft = 0;
+            this.speedRight = this.speed;
         }
-        if (this.y + this.htmlElement.clientHeight > window.innerHeight || this.y < 0) {
+        if (this.x + this.htmlElement.clientWidth < 0) {
+            this.x = window.innerWidth - this.htmlElement.clientWidth;
+            this.speedLeft = this.speed;
             this.speedRight = 0;
         }
     };
@@ -244,7 +253,7 @@ var StartScreen = (function () {
         console.log('startsceen');
     }
     StartScreen.prototype.update = function () {
-        this.textfield.innerHTML = "<br><br>Help, we zijn vast komen te zitten in een asteroide storm! We hebben te weinig brandstof om met turbo speed te kunnen ontsnappen. Help jij ons om genoeg power-elementen (20) te verzamelen voor deze turbo speed ?<br><br> Gebruik de pijltjes toetsen om naar links en rechts te bewegen en ontwijk de stenen. <br><br> Click op de tekst om de reddingsactie te starten!  ";
+        this.textfield.innerHTML = "<br><br>Help, we zijn vast komen te zitten in een asteroide storm! We hebben te weinig brandstof om met turbo speed te kunnen ontsnappen. Help jij ons om genoeg groene power-elementen (20) te verzamelen voor deze turbo speed ?<br><br> Gebruik de pijltjes toetsen om naar links en rechts te bewegen en ontwijk de stenen. <br><br> Click op de tekst om de reddingsactie te starten!  ";
     };
     StartScreen.prototype.switchScreens = function () {
         this.game.emptyScreen();

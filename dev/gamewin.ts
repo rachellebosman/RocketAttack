@@ -5,7 +5,8 @@ class GameWin {
     
 
 constructor() {       
-        this.textfield = document.createElement("textfieldWin")
+
+        this.textfield = document.createElement("textfieldGameOver")
         document.body.appendChild(this.textfield)  
         this.textfield.addEventListener("click", ()=> this.functienaam()) 
 
@@ -14,10 +15,10 @@ constructor() {
     }
 
     public update() {
-        this.textfield.innerHTML = "Yes, dankzij jou is het gelukt te ontsnappen! "
+        this.textfield.innerHTML = "Je hebt genoeg power verzameld voor de turbo speed! <br><br> Click hier om verder te gaan."
     }
 
-    functienaam(){
+    private functienaam(){
         location.href = "index3.html"
 
     }

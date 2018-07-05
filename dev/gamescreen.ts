@@ -16,7 +16,7 @@ class GameScreen {
         this.game = g
         this.spaceship = new Spaceship()
 
-        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock()]
+        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(),]
 
         this.smallRocks = [new SmallRock(), new SmallRock()]
 
@@ -92,17 +92,19 @@ class GameScreen {
     private updateScore(pointss:number) {
         this.score = this.score + pointss;
         this.scoreElement.innerHTML = "Power: " + this.score;
-        if(this.score == 3){
+        if(this.score == 20){
 
-            console.log('3 power items gefixt')
+            console.log('alle power items gefixt')
+
+
             this.game.emptyScreen()
             this.game.showScreen(new GameWin())
 
         }
     }
 
-    
-
+   
+  
 
 
     
