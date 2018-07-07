@@ -4,6 +4,11 @@ Link naar de game die ik heb gemaakt voor programmeren 4:
 
 https://rachellebosman.github.io/project_rachellebosman/index.html
 
+Als extra uitdaging heb ik gekozen voor:
+"De game ziet er zeer verzorgd uit dankzij goed uitgewerkt UI design en artwork."
+Dit heb ik gedaan door zelf alle afbeelingen en achtergronden te maken met behulp van photoshop. Zo heb ik 
+alles op elkaar kunnen afstemmen zodat het een geheel lijkt maar ook wat qua stijl bij de game past. 
+
 # Checklist programmeren4 game
 
 - [x] De code van het individuele project staat op GitHub.
@@ -32,9 +37,9 @@ https://rachellebosman.github.io/project_rachellebosman/index.html
 - [ ] De game maakt gebruik van device api's zoals de camera, microfoon, gyroscoop of GPS.
 - [ ] De game gebruikt een externe library uit de lijst in deze modulewijzer.
 
-## OOP principes
+# OOP principes
 
-# Classes
+## Classes
 
 Classes zijn een blauwdruk, hierin wordt het gedrag en hun eigenschappen beschreven. Je verdeeld je code in allemaal classes, alle classes bij elkaar vormen de gehele code. 
 
@@ -89,7 +94,7 @@ class StartScreen {
 }
 ```
 
-# Encapsulation
+## Encapsulation
 
 Bij encapsulation maak je gebruik van de volgende tags: Private, public en protected. Met behulp van deze tags vertel je waar de methods en properties gebruikt kunnen worden. 
 - Private, is alleen te gebruiken in de class waar deze wordt aangemaakt.
@@ -98,7 +103,36 @@ Bij encapsulation maak je gebruik van de volgende tags: Private, public en prote
 
 Voorbeelden volgen hier:
 
-# Composition
+Ik heb er voor gekozen om een aantal functies public te maken, zoals onderstaande. 
+Zo kan ik de functie vanuit verschillende locaties oproepen. 
+
+```
+ public emptyScreen() {
+       let foreground = document.getElementsByTagName("foreground")[0]
+      
+       foreground.innerHTML = ""
+    }
+```
+
+In mijn code heb ik op vele verschillende momenten gebruik gemaakt van de private tag. 
+Deze private elementen gaan alleen in deze class gebruikt worden en worden dus verder ook niet aangepast. 
+
+```
+class GameScreen {
+
+    private textfield:HTMLElement
+    private game:Game
+    private spaceship: Spaceship
+    private rocks: Rock[]
+    private smallRocks: SmallRock[]
+    private liveElement:HTMLElement;
+    private lives:number = 0
+    private scoreElement: HTMLElement;
+    private score:number = 0 
+```
+
+
+## Composition
 
 Composistion vindt plaats wanneer er meerdere objecten in een ander object geplaatst (classes worden aan elkaar gekoppeld)worden om zo de game te kunnen laten werken.
 
@@ -106,9 +140,60 @@ Game -> GameScreen -> SpaceShip
 
 Hoe dit in mijn game in elkaar zit, is duidelijker te zien in het klassendiagram die onderaan de pagina is toegevoegd.
 
-# Inheritance
+## Inheritance
 
 Inheritance wordt gebruikt bij objecten met veel overlappende code. Hierbij maak je een object aan en zet je alle code die hetzelfde is daarin. Daarna maak je voor de objecten individuele bestanden. Je koppelt meerde classes aan 1 parentclass. 
+
+Omdat ik meerdere verschillende vallende objecten in mijn game wou leek het mij makkelijk om gebruik te maken van inheritance zodat ik niet 2 of 3x dezelfde code te zou hoefen typen. Hier is de code van het rockObject, hier staat dus alle code in die hetzelfde is voor alle vallende objecten.
+
+```
+class rocksObject {
+
+    private htmlElement : HTMLElement
+    private x: number
+    private y: number
+   
+    public constructor( naamObject : string) {
+
+        this.htmlElement = document.createElement(naamObject);
+        document.body.appendChild(this.htmlElement);
+        this.x = Math.random() * (window.innerWidth - 200)
+        this.y = Math.floor(Math.random() * -600) + -50  
+    }
+
+    public getRectangle() {
+        return this.htmlElement.getBoundingClientRect()
+    }
+
+    update() {
+        this.y = this.y + 2
+        this.htmlElement.style.transform = `translate(${this.x}px, ${this.y}px)`
+
+        if (this.y + this.htmlElement.clientHeight > 650){
+            this.reset()    
+        }
+    }
+
+    public reset(){  
+        this.x = Math.random() * (window.innerWidth - 200)
+        this.y = -400 - (Math.random() * 450)        
+    }
+}
+```
+
+'naamObject' wordt oa uit de volgende code gehaald, in deze code wordt de naam "rock" meegegeven en wordt aangemaakt in bovenstaande code.
+
+```
+///<reference path="rocksObject.ts"/>
+
+class Rock extends rocksObject{
+    
+    constructor() {
+        super("rock")  
+    }
+}
+```
+
 
 # Klassendiagram
 
