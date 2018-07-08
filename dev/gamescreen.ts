@@ -14,7 +14,7 @@ class GameScreen {
 
         this.game = g
         this.spaceship = new Spaceship()
-        this.rocks = [new Rock(),new Rock()]
+        this.rocks = [new Rock(),new Rock(),new Rock(),new Rock(),new Rock(),new Rock(),new Rock(),new Rock(),new Rock(),new Rock(),new Rock(),new Rock()]
         this.smallRocks = [new SmallRock(), new SmallRock()]
 
         this.textfield = document.createElement("textfield")

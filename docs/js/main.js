@@ -37,7 +37,7 @@ var GameOver = (function () {
         this.textfield.addEventListener("click", function () { return _this.functienaam(); });
     }
     GameOver.prototype.update = function () {
-        this.textfield.innerHTML = "GAME OVER <br><br> Door te veel botsingen is het schip beschadigd en niet in staat om verder te vliegen. <br><br> Nog een keer proberen ? <br>Click op de tekst. ";
+        this.textfield.innerHTML = "GAME OVER <br><br> Door te veel botsingen is het schip beschadigd en niet in staat om verder te vliegen. <br><br> Nog een keer proberen ? <br>Klik op de tekst. ";
     };
     GameOver.prototype.functienaam = function () {
         location.href = "index2.html";
@@ -50,7 +50,7 @@ var GameScreen = (function () {
         this.score = 0;
         this.game = g;
         this.spaceship = new Spaceship();
-        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(),];
+        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock()];
         this.smallRocks = [new SmallRock(), new SmallRock()];
         this.textfield = document.createElement("textfield");
         document.body.appendChild(this.textfield);
@@ -68,7 +68,6 @@ var GameScreen = (function () {
             r.update();
             if (this.checkCollision(this.spaceship.getRectangle(), r.getRectangle())) {
                 r.reset();
-                console.log("paniek, steen geraakt!");
                 this.updateLives(-1);
             }
             if (r.getRectangle().bottom - r.getRectangle().height > window.innerHeight) {
@@ -79,7 +78,6 @@ var GameScreen = (function () {
                 sr.update();
                 if (this.checkCollision(this.spaceship.getRectangle(), sr.getRectangle())) {
                     sr.reset();
-                    console.log("power!!");
                     this.updateScore(1);
                 }
                 if (sr.getRectangle().left + sr.getRectangle().width < 0) {
@@ -106,7 +104,6 @@ var GameScreen = (function () {
         this.score = this.score + pointss;
         this.scoreElement.innerHTML = "Power: " + this.score;
         if (this.score == 20) {
-            console.log('alle power items gefixt');
             this.game.emptyScreen();
             this.game.showScreen(new GameWin());
         }
@@ -119,11 +116,9 @@ var GameWin = (function () {
         this.textfield = document.createElement("textfieldGameOver");
         document.body.appendChild(this.textfield);
         this.textfield.addEventListener("click", function () { return _this.functienaam(); });
-        this.schip = document.createElement("schip");
-        document.body.appendChild(this.schip);
     }
     GameWin.prototype.update = function () {
-        this.textfield.innerHTML = "Je hebt genoeg power verzameld voor de turbo speed! <br><br> Click hier om verder te gaan.";
+        this.textfield.innerHTML = "Je hebt genoeg power verzameld voor de turbo speed! <br><br> Klik hier om verder te gaan.";
     };
     GameWin.prototype.functienaam = function () {
         location.href = "index3.html";
@@ -132,6 +127,7 @@ var GameWin = (function () {
 }());
 var rocksObject = (function () {
     function rocksObject(naamObject) {
+        this.speed = 0;
         this.htmlElement = document.createElement(naamObject);
         document.body.appendChild(this.htmlElement);
         this.x = Math.random() * (window.innerWidth - 200);
@@ -141,9 +137,9 @@ var rocksObject = (function () {
         return this.htmlElement.getBoundingClientRect();
     };
     rocksObject.prototype.update = function () {
-        this.y = this.y + 2;
+        this.y = this.y + this.speed;
         this.htmlElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-        if (this.y + this.htmlElement.clientHeight > 650) {
+        if (this.y + this.htmlElement.clientHeight > window.innerHeight) {
             this.reset();
         }
     };
@@ -156,14 +152,18 @@ var rocksObject = (function () {
 var Rock = (function (_super) {
     __extends(Rock, _super);
     function Rock() {
-        return _super.call(this, "rock") || this;
+        var _this = _super.call(this, "rock") || this;
+        _this.speed = 2;
+        return _this;
     }
     return Rock;
 }(rocksObject));
 var SmallRock = (function (_super) {
     __extends(SmallRock, _super);
     function SmallRock() {
-        return _super.call(this, "smallRock") || this;
+        var _this = _super.call(this, "smallRock") || this;
+        _this.speed = 2;
+        return _this;
     }
     return SmallRock;
 }(rocksObject));

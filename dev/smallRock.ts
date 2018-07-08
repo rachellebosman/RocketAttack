@@ -5,7 +5,7 @@ class SmallRock extends rocksObject{
     constructor() {
 
         super("smallRock")  
-        this.speed = 4    
+        this.speed = 2   
 
     }
 }

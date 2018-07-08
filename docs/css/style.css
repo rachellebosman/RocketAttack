@@ -3,6 +3,7 @@ body, html {
     margin:0; padding:0;
     font-family: 'Abel';
     background-image: url(../images/background.png);
+    overflow: hidden;
 }
 
 spaceship {

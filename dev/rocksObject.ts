@@ -22,7 +22,7 @@ class rocksObject {
         this.y = this.y + this.speed
         this.htmlElement.style.transform = `translate(${this.x}px, ${this.y}px)`
 
-        if (this.y + this.htmlElement.clientHeight > 650){
+        if (this.y + this.htmlElement.clientHeight > window.innerHeight){
             this.reset()    
         }
     }

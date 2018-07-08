@@ -56,9 +56,6 @@ Mijn game is verdeeld in de volgende classes (deze zijn te vinden in het mapje "
 
 Hier een voorbeeld hoe de startscreen class er uit ziet: 
 
-
-Hieronder een voorbeeld van de Class Gameover:
-
 ``` 
 class StartScreen {
 
@@ -194,8 +191,9 @@ class Rock extends rocksObject{
 }
 ```
 
-
 # Klassendiagram
+Link naar het klassendiagram die ik heb gemaakt: 
+https://stud.hosted.hr.nl/0957541/2018/07/08/klassendiagram-game-programmeren-4/
 
 
 # Peer-review 
