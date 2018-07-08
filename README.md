@@ -126,8 +126,33 @@ class GameScreen {
     private lives:number = 0
     private scoreElement: HTMLElement;
     private score:number = 0 
+
 ```
 
+Protected heb ik gebruikt zodat deze vanuit een andere child class nog aan te passen was, dat is te zien in het volgende stukje code.
+ParentClass:   
+
+```
+class rocksObject {
+
+    private htmlElement : HTMLElement
+    private x: number
+    private y: number
+    protected speed:number = 0;         
+
+```
+ChildClass:
+
+```
+class Rock extends rocksObject{
+    
+    constructor() {
+        super("rock")  
+        this.speed = 2    
+
+    }
+}
+```
 
 ## Composition
 
