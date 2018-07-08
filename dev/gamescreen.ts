@@ -8,19 +8,14 @@ class GameScreen {
     private liveElement:HTMLElement;
     private lives:number = 0
     private scoreElement: HTMLElement;
-    
     private score:number = 0 
 
     constructor(g:Game) {
 
         this.game = g
         this.spaceship = new Spaceship()
-
-        this.rocks = [new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(), new Rock(),]
-
+        this.rocks = [new Rock(),new Rock()]
         this.smallRocks = [new SmallRock(), new SmallRock()]
-
-       
 
         this.textfield = document.createElement("textfield")
         document.body.appendChild(this.textfield) 
@@ -33,22 +28,17 @@ class GameScreen {
 
         this.updateLives(3)
         this.updateScore(0)
-        
-
     }
 
     public update(): void 
     {
         this.spaceship.update()
         
-
-
         for(let r of this.rocks)
         {
             r.update()
             if (this.checkCollision(this.spaceship.getRectangle(), r.getRectangle())) {
                 r.reset()
-                console.log("paniek, steen geraakt!")
                 this.updateLives(-1)
             
             }
@@ -62,14 +52,12 @@ class GameScreen {
             sr.update()
             if (this.checkCollision(this.spaceship.getRectangle(), sr.getRectangle())) {
                 sr.reset()
-                console.log("power!!")
                 this.updateScore(1)
             }
            
             if (sr.getRectangle().left + sr.getRectangle().width < 0) {
                 sr.reset()
         }
-
  
     }
         }}
@@ -93,19 +81,9 @@ class GameScreen {
         this.score = this.score + pointss;
         this.scoreElement.innerHTML = "Power: " + this.score;
         if(this.score == 20){
-
-            console.log('alle power items gefixt')
-
-
             this.game.emptyScreen()
             this.game.showScreen(new GameWin())
-
         }
     }
-
-   
-  
-
-
-    
+ 
 }

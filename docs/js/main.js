@@ -130,34 +130,11 @@ var GameWin = (function () {
     };
     return GameWin;
 }());
-var Power = (function () {
-    function Power() {
-        this.htmlElement = document.createElement('power');
-        document.body.appendChild(this.htmlElement);
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.floor(Math.random() * -600) + -50;
-    }
-    Power.prototype.getRectangle = function () {
-        return this.htmlElement.getBoundingClientRect();
-    };
-    Power.prototype.update = function () {
-        this.y = this.y + 2;
-        this.htmlElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-        if (this.y + this.htmlElement.clientHeight > 650) {
-            this.reset();
-        }
-    };
-    Power.prototype.reset = function () {
-        this.x = Math.random() * (window.innerWidth - 200);
-        this.y = -400 - (Math.random() * 450);
-    };
-    return Power;
-}());
 var rocksObject = (function () {
     function rocksObject(naamObject) {
         this.htmlElement = document.createElement(naamObject);
         document.body.appendChild(this.htmlElement);
-        this.x = Math.random() * (window.innerWidth - 50);
+        this.x = Math.random() * (window.innerWidth - 200);
         this.y = Math.floor(Math.random() * -600) + -50;
     }
     rocksObject.prototype.getRectangle = function () {
@@ -197,7 +174,6 @@ var Spaceship = (function () {
         this.y = window.innerHeight - 100;
         this.speedLeft = 0;
         this.speedRight = 0;
-        this.lives = 5;
         this.speed = 10;
         this.htmlElement = document.createElement("spaceship");
         document.body.appendChild(this.htmlElement);
@@ -250,7 +226,6 @@ var StartScreen = (function () {
         var foreground = document.getElementsByTagName("foreground")[0];
         foreground.appendChild(this.textfield);
         this.textfield.addEventListener("click", function () { return _this.switchScreens(); });
-        console.log('startsceen');
     }
     StartScreen.prototype.update = function () {
         this.textfield.innerHTML = "<br><br>Help, we zijn vast komen te zitten in een asteroide storm! We hebben te weinig brandstof om met turbo speed te kunnen ontsnappen. Help jij ons om genoeg groene power-elementen (20) te verzamelen voor deze turbo speed ?<br><br> Gebruik de pijltjes toetsen om naar links en rechts te bewegen en ontwijk de stenen. <br><br> Click op de tekst om de reddingsactie te starten!  ";

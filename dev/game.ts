@@ -7,14 +7,13 @@ class Game {
         this.gameLoop()
     }
     
-    private gameLoop():void{
+    public gameLoop():void{
         this.currentscreen.update()
         requestAnimationFrame(() => this.gameLoop())
     }
 
     public emptyScreen() {
        let foreground = document.getElementsByTagName("foreground")[0]
-      
        foreground.innerHTML = ""
     }
 

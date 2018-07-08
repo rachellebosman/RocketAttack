@@ -47,7 +47,7 @@ Mijn game is verdeeld in de volgende classes (deze zijn te vinden in het mapje "
  
 -	Game
 -	Gameover
--	Gamestart
+-	Gamescreen
 -	Gamewin
 -	Rock
 -	Smallrock
